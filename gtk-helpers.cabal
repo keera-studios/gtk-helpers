@@ -1,0 +1,26 @@
+Name:                gtk-helpers
+Version:             0.0.1
+Synopsis:            A collection of auxiliary operations related to Gtk
+-- Description:         
+Homepage:            http://keera.es/blog/community
+License:             BSD3
+License-file:        LICENSE
+Author:              Ivan Perez
+Maintainer:          ivan.perez@keera.es
+-- Copyright:           
+Stability:           Experimental
+Category:            Graphics
+Build-type:          Simple
+-- Extra-source-files:  
+Cabal-version:       >=1.2
+
+Library
+  -- Exposed-modules:     
+  Build-depends:       base >=4, template-haskell, gtk
+  -- Other-modules:       
+  hs-source-dirs:      src/
+  -- Build-tools:         
+  ghc-options: -Wall
+
+  exposed-modules: Graphics.UI.Gtk.Extra.Builder
+                 , Graphics.UI.Gtk.Extra.BuilderTH
