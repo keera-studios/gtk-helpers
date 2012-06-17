@@ -1,5 +1,5 @@
 Name:                gtk-helpers
-Version:             0.0.1
+Version:             0.0.2
 Synopsis:            A collection of auxiliary operations related to Gtk
 -- Description:         
 Homepage:            http://keera.es/blog/community
@@ -16,7 +16,7 @@ Cabal-version:       >=1.2
 
 Library
   -- Exposed-modules:     
-  Build-depends:       base >=4, template-haskell, gtk
+  Build-depends:       base >=4, template-haskell, gtk, process, gio
   -- Other-modules:       
   hs-source-dirs:      src/
   -- Build-tools:         
@@ -24,3 +24,8 @@ Library
 
   exposed-modules: Graphics.UI.Gtk.Extra.Builder
                  , Graphics.UI.Gtk.Extra.BuilderTH
+                 , Graphics.UI.Gtk.Helpers.Combo
+                 , Graphics.UI.Gtk.Helpers.FileDialog
+                 , Graphics.UI.Gtk.Helpers.MenuItem
+                 , Graphics.UI.Gtk.Helpers.MessageDialog
+                 , System.Application
