@@ -1,5 +1,5 @@
 Name:                gtk-helpers
-Version:             0.0.2
+Version:             0.0.3
 Synopsis:            A collection of auxiliary operations related to Gtk
 -- Description:         
 Homepage:            http://keera.es/blog/community
@@ -28,4 +28,5 @@ Library
                  , Graphics.UI.Gtk.Helpers.FileDialog
                  , Graphics.UI.Gtk.Helpers.MenuItem
                  , Graphics.UI.Gtk.Helpers.MessageDialog
+                 , Graphics.UI.Gtk.Helpers.Multiline.TextBufferHelpers
                  , System.Application
