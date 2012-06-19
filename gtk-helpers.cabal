@@ -16,7 +16,7 @@ Cabal-version:       >=1.2
 
 Library
   -- Exposed-modules:     
-  Build-depends:       base >=4, template-haskell, gtk, process, gio
+  Build-depends:       base >=4, template-haskell, gtk, process, gio, glib
   -- Other-modules:       
   hs-source-dirs:      src/
   -- Build-tools:         
@@ -29,4 +29,8 @@ Library
                  , Graphics.UI.Gtk.Helpers.MenuItem
                  , Graphics.UI.Gtk.Helpers.MessageDialog
                  , Graphics.UI.Gtk.Helpers.Multiline.TextBufferHelpers
+                 , Graphics.UI.Gtk.Helpers.ModelViewPath
+                 , Graphics.UI.Gtk.Helpers.ModelViewNotebookSync
+                 , Graphics.UI.Gtk.Layout.EitherWidget
+                 , Graphics.UI.Gtk.Layout.MaybeWidget
                  , System.Application
