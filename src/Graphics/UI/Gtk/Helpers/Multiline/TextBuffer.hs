@@ -1,5 +1,5 @@
 -- | Auxiliary functions userful to manipulate TextBuffers
-module Graphics.UI.Gtk.Helpers.Multiline.TextBufferHelpers where
+module Graphics.UI.Gtk.Helpers.Multiline.TextBuffer where
 
 -- External imports
 import Control.Monad
