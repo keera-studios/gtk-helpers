@@ -13,23 +13,24 @@ module Graphics.UI.Gtk.Entry.FormatEntry
 
 import Control.Monad.Trans (liftIO)
 import Graphics.UI.Gtk
+import Graphics.UI.Gtk.Entry.HighlightedEntry
 import System.Glib.Types
 import Data.IORef
 
 -- Higlighted Entries
-data FormatEntry = FormatEntry Entry (IORef FormatEntryParams)
-type FormatEntryParams = (Color, String -> Bool)
+data FormatEntry = FormatEntry HighlightedEntry (IORef FormatEntryParams)
+type FormatEntryParams = String -> Bool
 
 formatEntryNew :: (String -> Bool) -> IO FormatEntry
 formatEntryNew checkF = do
-  entry <- entryNew
-  defaultParamsRef <- newIORef (Color 65000 32000 32000, checkF)
+  entry <- highlightedEntryNew
+  defaultParamsRef <- newIORef checkF
   let formatEntry = FormatEntry entry defaultParamsRef
-  formatEntry `on` keyPressEvent $ liftIO (refreshBaseColor formatEntry) >> return False
-  formatEntry `on` keyReleaseEvent $ liftIO (refreshBaseColor formatEntry) >> return False
-  formatEntry `onCopyClipboard` refreshBaseColor formatEntry
-  formatEntry `onCutClipboard` refreshBaseColor formatEntry
-  formatEntry `onPasteClipboard` refreshBaseColor formatEntry
+  formatEntry `on` keyPressEvent $ liftIO (refreshEntry formatEntry) >> return False
+  formatEntry `on` keyReleaseEvent $ liftIO (refreshEntry formatEntry) >> return False
+  formatEntry `onCopyClipboard` refreshEntry formatEntry
+  formatEntry `onCutClipboard` refreshEntry formatEntry
+  formatEntry `onPasteClipboard` refreshEntry formatEntry
   return formatEntry
 
 instance GObjectClass FormatEntry where
@@ -40,39 +41,31 @@ instance WidgetClass FormatEntry
 instance EntryClass FormatEntry
 
 formatEntrySetColor :: FormatEntry -> Color -> IO ()
-formatEntrySetColor he@(FormatEntry _ params) color = do
-  modifyIORef params (\(_, f) -> (color, f))
-  refreshBaseColor he
+formatEntrySetColor (FormatEntry e _) color = highlightedEntrySetColor e color
 
 formatEntryGetColor :: FormatEntry -> IO Color
-formatEntryGetColor (FormatEntry _ params) = do
-  (color, _) <- readIORef params
-  return color
+formatEntryGetColor (FormatEntry e _) = highlightedEntryGetColor e
 
 formatEntrySetCheckFunction :: FormatEntry -> (String -> Bool) -> IO ()
-formatEntrySetCheckFunction he@(FormatEntry _ params) checkF = do
-  modifyIORef params (\(c, _) -> (c, checkF))
+formatEntrySetCheckFunction fe@(FormatEntry _ params) checkF = do
+  writeIORef params checkF
+  refreshEntry fe
 
 formatEntryGetCheckFunction :: FormatEntry -> IO (String -> Bool)
-formatEntryGetCheckFunction (FormatEntry _ params) = do
-  (_, checkF) <- readIORef params
-  return checkF
+formatEntryGetCheckFunction (FormatEntry _ params) =
+  readIORef params
 
 -- Repaints the entry using the current color, or resets the
 -- default style if no warning has to be given
-refreshBaseColor :: FormatEntry -> IO()
-refreshBaseColor f@(FormatEntry entry params) = do
-  (color, _) <- readIORef params
-  status <- formatEntryHasCorrectFormat f
-  if status
-   then mapM_ (widgetRestoreBase entry) sensitiveStates
-   else mapM_ (\s -> widgetModifyBase entry s color) sensitiveStates
- where sensitiveStates = [ StateNormal, StateActive
-                         , StateSelected, StatePrelight
-                         ]
+refreshEntry :: FormatEntry -> IO()
+refreshEntry f@(FormatEntry entry params) = do
+  correct <- formatEntryHasCorrectFormat f
+  highlightedEntrySetStatus entry (not correct)
 
 formatEntryColor :: Attr FormatEntry Color
-formatEntryColor = newAttr formatEntryGetColor formatEntrySetColor
+formatEntryColor = newAttr getter setter
+  where getter (FormatEntry e _)   = highlightedEntryGetColor e
+        setter (FormatEntry e _) v = highlightedEntrySetColor e v
 
 formatEntryCheckFunction :: Attr FormatEntry (String -> Bool)
 formatEntryCheckFunction = newAttr formatEntryGetCheckFunction formatEntrySetCheckFunction

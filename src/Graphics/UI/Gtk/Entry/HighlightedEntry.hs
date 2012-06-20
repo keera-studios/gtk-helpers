@@ -1,4 +1,14 @@
-module Graphics.UI.Gtk.Entry.HighlightedEntry where
+module Graphics.UI.Gtk.Entry.HighlightedEntry
+   ( HighlightedEntry
+   , highlightedEntryNew
+   , highlightedEntrySetColor
+   , highlightedEntryGetColor
+   , highlightedEntrySetStatus
+   , highlightedEntryGetStatus
+   , highlightedEntryColor
+   , highlightedEntryStatus
+   )
+  where
 
 import Control.Monad.Trans (liftIO)
 import Graphics.UI.Gtk
