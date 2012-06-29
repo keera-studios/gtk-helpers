@@ -1,6 +1,7 @@
 module Graphics.UI.Gtk.Entry.FormatEntry
    ( FormatEntry
    , formatEntryNew
+   , formatEntryNewWithFunction
    , formatEntrySetColor
    , formatEntryGetColor
    , formatEntrySetCheckFunction
@@ -21,16 +22,15 @@ import Data.IORef
 data FormatEntry = FormatEntry HighlightedEntry (IORef FormatEntryParams)
 type FormatEntryParams = String -> Bool
 
-formatEntryNew :: (String -> Bool) -> IO FormatEntry
-formatEntryNew checkF = do
+formatEntryNew :: IO FormatEntry
+formatEntryNew = formatEntryNewWithFunction (const True)
+
+formatEntryNewWithFunction :: (String -> Bool) -> IO FormatEntry
+formatEntryNewWithFunction checkF = do
   entry <- highlightedEntryNew
   defaultParamsRef <- newIORef checkF
   let formatEntry = FormatEntry entry defaultParamsRef
-  formatEntry `on` keyPressEvent $ liftIO (refreshEntry formatEntry) >> return False
-  formatEntry `on` keyReleaseEvent $ liftIO (refreshEntry formatEntry) >> return False
-  formatEntry `onCopyClipboard` refreshEntry formatEntry
-  formatEntry `onCutClipboard` refreshEntry formatEntry
-  formatEntry `onPasteClipboard` refreshEntry formatEntry
+  formatEntry `on` editableChanged $ refreshEntry formatEntry
   return formatEntry
 
 instance GObjectClass FormatEntry where
@@ -39,6 +39,7 @@ instance GObjectClass FormatEntry where
 instance ObjectClass FormatEntry
 instance WidgetClass FormatEntry
 instance EntryClass FormatEntry
+instance EditableClass FormatEntry
 
 formatEntrySetColor :: FormatEntry -> Color -> IO ()
 formatEntrySetColor (FormatEntry e _) color = highlightedEntrySetColor e color
@@ -63,9 +64,7 @@ refreshEntry f@(FormatEntry entry params) = do
   highlightedEntrySetStatus entry (not correct)
 
 formatEntryColor :: Attr FormatEntry Color
-formatEntryColor = newAttr getter setter
-  where getter (FormatEntry e _)   = highlightedEntryGetColor e
-        setter (FormatEntry e _) v = highlightedEntrySetColor e v
+formatEntryColor = newAttr formatEntryGetColor formatEntrySetColor
 
 formatEntryCheckFunction :: Attr FormatEntry (String -> Bool)
 formatEntryCheckFunction = newAttr formatEntryGetCheckFunction formatEntrySetCheckFunction
