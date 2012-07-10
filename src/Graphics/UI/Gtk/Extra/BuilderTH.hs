@@ -8,6 +8,7 @@
 
 module Graphics.UI.Gtk.Extra.BuilderTH
   ( gtkBuilderAccessor
+  , gtkViewAccessor
   , fromBuilder
   )
  where
@@ -35,3 +36,29 @@ gtkBuilderAccessor name kind = sequenceQ
   where castedAccess = appE (varE (mkName "fromBuilder")) casting
         casting      = varE (mkName ("castTo" ++ kind))
         funcName     = mkName name
+
+-- | Accessor for Glade objects from Gtk Builders encapsulated in
+-- Views, by name and -- type.
+gtkViewAccessor :: String -> String -> String -> String -> Q [Dec]
+gtkViewAccessor builderModule uiAccessor name kind = sequenceQ
+  -- Declaration
+  [ sigD funcName
+         -- Builder -> IO Kind
+         (appT (appT arrowT (conT (mkName "View")))           
+               (appT (conT (mkName "IO")) (conT (mkName kind))))
+  -- Implementation
+  , funD funcName                                                 
+         -- castedOnBuilder objectName
+         [clause [varP builderName]
+                 (normalB (appE (varE funcNameInBuilder)
+                                (appE (varE (mkName uiAccessor))
+                                      (varE builderName)
+                                )
+                          )) []]
+  ]
+
+  where castedAccess      = appE (varE (mkName "fromBuilder")) casting
+        casting           = varE (mkName ("castTo" ++ kind))
+        funcName          = mkName name
+        funcNameInBuilder = mkName $ builderModule ++ ('.' : name) 
+        builderName       = mkName "b"

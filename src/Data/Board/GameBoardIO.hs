@@ -1,4 +1,4 @@
-module Data.Board where
+module Data.Board.GameBoardIO where
 
 import Control.Monad
 import Data.Array.IO
@@ -56,12 +56,22 @@ gameBoardFoldM (GameBoard array) f def = do
   let assocs' = map (\(x,y) -> (x,fromJust y)) $ filter (isJust . snd) assocs
   foldM f def assocs'
 
-gameBoardFoldM_ :: (Ix index) => GameBoard index a -> ((index,index) -> a -> IO ()) -> IO ()
-gameBoardFoldM_ (GameBoard array) f =
-  foldArrayM_ array f'
+gameBoardMapM_ :: (Ix index) => GameBoard index a -> ((index,index) -> a -> IO ()) -> IO ()
+gameBoardMapM_ (GameBoard array) f =
+  arrayMapM_ array f'
  where f' x e = maybe (return ()) (f x) e
 
-foldArrayM_ :: (Ix index) => IOArray index a -> (index -> a -> IO ()) -> IO ()
-foldArrayM_ array f = do
+arrayMapM_ :: (Ix index) => IOArray index a -> (index -> a -> IO ()) -> IO ()
+arrayMapM_ array f = do
   assocs <- getAssocs array
   mapM_ (uncurry f) assocs
+
+gameBoardClear :: (Ix index) => GameBoard index a -> IO()
+gameBoardClear board@(GameBoard array) = do
+  ((xm, ym), (xM, yM)) <- getBounds array
+  forM_ (range (xm, xM)) $ \x -> 
+    forM_ (range (ym, yM)) $ \y ->
+      gameBoardRemovePiece (x,y) board
+
+gameBoardGetBoundaries :: (Ix index) => GameBoard index a -> IO ((index,index),(index,index))
+gameBoardGetBoundaries (GameBoard array) = getBounds array
