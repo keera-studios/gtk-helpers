@@ -1,6 +1,6 @@
 Name:                gtk-helpers
-Version:             0.0.4
-Synopsis:            A collection of auxiliary operations related to Gtk
+Version:             0.0.6
+Synopsis:            A collection of auxiliary operations and widgets related to Gtk
 -- Description:         
 Homepage:            http://keera.es/blog/community
 License:             BSD3
@@ -16,21 +16,29 @@ Cabal-version:       >=1.2
 
 Library
   -- Exposed-modules:     
-  Build-depends:       base >=4, template-haskell, gtk, process, gio, glib
+  Build-depends:       base >=4, template-haskell, process, gtk, gio, glib, mtl, array
   -- Other-modules:       
   hs-source-dirs:      src/
   -- Build-tools:         
   ghc-options: -Wall
 
-  exposed-modules: Graphics.UI.Gtk.Extra.Builder
+  exposed-modules: Data.Board.GameBoardIO
+                 , Graphics.UI.Gtk.Board.TiledBoard
+                 , Graphics.UI.Gtk.Entry.FormatEntry
+                 , Graphics.UI.Gtk.Entry.HighlightedEntry
+                 , Graphics.UI.Gtk.Extra.Builder
                  , Graphics.UI.Gtk.Extra.BuilderTH
                  , Graphics.UI.Gtk.Helpers.Combo
                  , Graphics.UI.Gtk.Helpers.FileDialog
                  , Graphics.UI.Gtk.Helpers.MenuItem
                  , Graphics.UI.Gtk.Helpers.MessageDialog
-                 , Graphics.UI.Gtk.Helpers.Multiline.TextBuffer
-                 , Graphics.UI.Gtk.Helpers.ModelViewPath
                  , Graphics.UI.Gtk.Helpers.ModelViewNotebookSync
+                 , Graphics.UI.Gtk.Helpers.ModelViewPath
+                 , Graphics.UI.Gtk.Helpers.Multiline.TextBuffer
+                 , Graphics.UI.Gtk.Helpers.Pixbuf
+                 , Graphics.UI.Gtk.Helpers.TreeView
+                 , Graphics.UI.Gtk.Layout.BackgroundContainer
+                 , Graphics.UI.Gtk.Layout.DummyBin
                  , Graphics.UI.Gtk.Layout.EitherWidget
                  , Graphics.UI.Gtk.Layout.MaybeWidget
                  , System.Application

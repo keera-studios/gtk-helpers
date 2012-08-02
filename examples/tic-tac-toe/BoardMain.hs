@@ -6,10 +6,7 @@ import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Board.TiledBoard
 
 data Player = Player1 | Player2
- deriving (Eq, Show)
-
-data Piece = Piece
- deriving (Eq, Show)
+ deriving (Eq)
 
 data Tile = Tile
 
@@ -27,11 +24,12 @@ main = do
   player2 <- pixbufNewFromFile "player-piece-white.png"
 
   let tileF _ = tile
-      playerF (Player1,_) = player1
-      playerF (Player2,_) = player2
+      playerF Player1 = player1
+      playerF Player2 = player2
 
   let allTiles = [(x,y,Tile) | x <- [0..2] :: [Int], y <- [0..2] :: [Int]]
-  board <- boardNew allTiles tileF playerF (32,32)
+  board <- boardNew allTiles tileF playerF
+  mapM_ (\s -> widgetModifyBg board s (Color 50000 50000 65000)) [StateNormal, StateActive, StatePrelight, StateSelected]
   containerAdd window board
 
   -- Model
@@ -51,15 +49,15 @@ main = do
 
     case (movingM, pieceM, num) of
      -- Add or move a piece, when legal
-     (Nothing,   Nothing,           3) -> return ()
-     (Nothing,   Nothing,           _) -> do boardSetPiece pos (nextPlayer, Piece) board
-                                             modifyIORef nextPlayerRef togglePlayer
-     (Just pos', Nothing,           _) -> do writeIORef movingRef Nothing
-                                             boardMovePiece pos' pos board
-                                             modifyIORef nextPlayerRef togglePlayer
+     (Nothing,   Nothing,    3) -> return ()
+     (Nothing,   Nothing,    _) -> do boardSetPiece pos nextPlayer board
+                                      modifyIORef nextPlayerRef togglePlayer
+     (Just pos', Nothing,    _) -> do writeIORef movingRef Nothing
+                                      boardMovePiece pos' pos board
+                                      modifyIORef nextPlayerRef togglePlayer
      -- Start/cancel moving a piece
-     (Nothing,   Just (player', _), 3) -> when (nextPlayer == player') $ writeIORef movingRef (Just pos)
-     (Just pos', Just _,            _) -> when (pos == pos') $ writeIORef movingRef Nothing
+     (Nothing,   Just player', 3) -> when (nextPlayer == player') $ writeIORef movingRef (Just pos)
+     (Just pos', Just _,       _) -> when (pos == pos') $ writeIORef movingRef Nothing
 
      -- Ignore clicking on a piece if we still have pieces to add
      _                                 -> return ()
@@ -71,8 +69,8 @@ main = do
   widgetShowAll window
   mainGUI
 
-numPieces :: Ix index => Board index Player tile Piece -> Player -> IO Int
-numPieces board player = boardFoldM board (\n (_,(player',_)) -> if player == player' then return (n + 1) else return n) 0
+numPieces :: Ix index => Board index tile Player -> Player -> IO Int
+numPieces board player = boardFoldM board (\n (_,player') -> if player == player' then return (n + 1) else return n) 0
 
 togglePlayer :: Player -> Player
 togglePlayer Player1 = Player2 
