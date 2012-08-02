@@ -8,10 +8,15 @@ data GameBoard index e = GameBoard (IOArray (index,index) (Maybe e))
 
 gameBoardNew :: (Ix index) => [(index, index, e)] -> IO (GameBoard index e)
 gameBoardNew es = do
-    array <- newArray (listBoundaries indexList) Nothing
+    gameBoardNewWithBoundaries boundaries es
+  where indexList  = map (\(i,j,_) -> (i,j)) es
+        boundaries = listBoundaries indexList
+
+gameBoardNewWithBoundaries :: (Ix index) => ((index, index), (index, index)) -> [(index, index, e)] -> IO (GameBoard index e)
+gameBoardNewWithBoundaries boundaries es = do
+    array <- newArray boundaries Nothing
     mapM_ (\(i,j,e) -> writeArray array (i,j) (Just e)) es
     return $ GameBoard array
-  where indexList = map (\(i,j,_) -> (i,j)) es
 
 gameBoardNewEmptySquare :: (Num index, Ix index) => index -> index -> IO (GameBoard index e)
 gameBoardNewEmptySquare iX jX = do
@@ -75,3 +80,10 @@ gameBoardClear board@(GameBoard array) = do
 
 gameBoardGetBoundaries :: (Ix index) => GameBoard index a -> IO ((index,index),(index,index))
 gameBoardGetBoundaries (GameBoard array) = getBounds array
+
+gameBoardClone :: (Ix index) => GameBoard index a -> IO (GameBoard index a)
+gameBoardClone (GameBoard array) = do
+  bounds <- getBounds array
+  assocs <- getAssocs array
+  let assocs' = [(ix,iy,e) | ((ix,iy), Just e) <- assocs]
+  gameBoardNewWithBoundaries bounds assocs'
