@@ -26,10 +26,10 @@ data Board index tile piece = Board
   , draggingTo        :: IORef (Maybe (index, index))
   , draggingMouseOrig :: IORef (Maybe (Int, Int))
   , draggingMousePos  :: IORef (Maybe (Int, Int))
-  , movingStatus      :: IORef (Maybe MovingStatus)
+  , movingStatus      :: IORef (Maybe (MovingStatus index))
   }
 
-data MovingStatus = MovingStatus
+data MovingStatus index = MovingStatus
   { movingFrom   :: (index, index)
   , movingTo     :: (index, index)
   , stepsPerUnit :: Double
@@ -380,23 +380,24 @@ relativePos board (ix,iy) (x,y) = (x', y')
 returning :: Monad m => a -> m b -> m a
 returning v f = f >> return v
 
-boardLiveMove :: Ix index => (index, index) -> (index, index) -> Board index tile piece -> Double -> Double IO ()
-boardLiveMove posO posD board = do
-  evs <- wigetGetEvents board
-  
-  let evs' = undefined
-  
-  movingParams <- undefined
-
-  let timeDelay = undefined
-
-  writeIORef (movingStatus board) (Just movingParams)
-
-  -- Set delay and time handler
-  timeoutAdd (do undefined -- advance moving one step
-                 boardInvalidate board
-                 -- return True if not the end, otherwise return False
-             )
-             timeDelay
-             
-     -- Time Handler includes resetting the event handers
+-- boardLiveMove :: Ix index => (index, index) -> (index, index) -> Board index tile piece -> IO ()
+-- boardLiveMove posO posD board = do
+--   evs <- widgetGetEvents board
+--   
+--   let evs' = undefined
+--   
+--   movingParams <- undefined
+-- 
+--   let timeDelay = undefined
+-- 
+--   writeIORef (movingStatus board) (Just movingParams)
+-- 
+--   -- Set delay and time handler
+--   timeoutAdd (do undefined -- advance moving one step
+--                  boardInvalidate board
+--                  -- return True if not the end, otherwise return False
+--              )
+--              timeDelay
+--              
+--      -- Time Handler includes resetting the event handers
+--   return ()
