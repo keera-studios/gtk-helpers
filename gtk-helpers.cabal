@@ -1,5 +1,5 @@
 Name:                gtk-helpers
-Version:             0.0.6
+Version:             0.0.7
 Synopsis:            A collection of auxiliary operations and widgets related to Gtk
 -- Description:         
 Homepage:            http://keera.es/blog/community
@@ -23,7 +23,9 @@ Library
   ghc-options: -Wall
 
   exposed-modules: Data.Board.GameBoardIO
+                 , Game.Board.BasicTurnGame
                  , Graphics.UI.Gtk.Board.TiledBoard
+                 , Graphics.UI.Gtk.Board.BoardLink
                  , Graphics.UI.Gtk.Entry.FormatEntry
                  , Graphics.UI.Gtk.Entry.HighlightedEntry
                  , Graphics.UI.Gtk.Extra.Builder
