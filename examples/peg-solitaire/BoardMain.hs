@@ -78,7 +78,7 @@ attemptDragOver _ _ _ = return True
 
 attemptMove :: Board Int Tile Peg -> (Int, Int) -> (Int, Int) -> IO ()
 attemptMove board p1 p2 = do
-  pieceM     <- boardGetPiece p2 board           -- the piece on the position where the user clicked, if any
+  pieceM     <- boardGetPiece p2 board           -- the piece on the position where the user dropped, if any
   interPiece <- boardGetPiece intermediate board -- the piece between the one we are moving and the hole
   when (correctDiff && isJust interPiece && isNothing pieceM) $ do
     boardMovePiece p1 p2 board
