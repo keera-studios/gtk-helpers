@@ -94,3 +94,27 @@ togglePlayer Player2 = Player1
 -- 
 -- ticTacToeFinished :: TicTacToeGame -> IO Bool
 -- ticTacToeFinished board = return False
+
+-- attachGameRules :: Ix index => Board index tile (player, piece)  -> VisualGame index tile player piece -> IO ()
+-- attachGameRules board game = do
+--   board <- boardNew (boardPos game) (tileF game) (pieceF game)
+--   let (r,g,b) = bgColor game
+--   mapM_ (\s -> widgetModifyBg board s (Color r g b)) [StateNormal, StateActive, StatePrelight, StateSelected]
+-- 
+-- 
+-- data Game index tile player piece = Ix index => Game
+--   { nextPlayer  :: players
+--   , boardPos    :: [(index, index, tile)]
+--   , canMove     :: player -> (index, index) -> Bool
+--   , canMoveTo   :: player -> (index, index) -> (index, index) -> Bool
+--   , move        :: player -> (index, index) -> (index, index) -> Game index tile player piece
+--   , canActivate :: player -> (index, index) -> Bool
+--   , activate    :: player -> (index, index) -> Game index tile player piece
+--   }
+-- 
+-- data VisualGame index tile player piece = Ix index => VisualGame
+--   { game    :: Game index tile player piece
+--   , tileF   :: PixmapFor tile
+--   , pieceF  :: PixmapFor (player, piece)
+--   , bgColor :: (Int, Int, Int)
+--   } 

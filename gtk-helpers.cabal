@@ -16,7 +16,7 @@ Cabal-version:       >=1.2
 
 Library
   -- Exposed-modules:     
-  Build-depends:       base >=4, template-haskell, process, gtk, gio, glib, mtl, array
+  Build-depends:       base >= 4, template-haskell, process, gtk, gio, glib, mtl, array
   -- Other-modules:       
   hs-source-dirs:      src/
   -- Build-tools:         
