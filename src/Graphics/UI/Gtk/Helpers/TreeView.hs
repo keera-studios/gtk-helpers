@@ -48,3 +48,11 @@ synchroniseTreeViewAndNotebook tv nb f = do
 treeViewGetSelectedPath :: TreeViewClass tv => tv -> IO [[Int]]
 treeViewGetSelectedPath =
   treeSelectionGetSelectedRows <=< treeViewGetSelection
+
+treeViewGetSelected :: TreeViewClass tv => tv -> ListStore a -> IO (Maybe a)
+treeViewGetSelected tv ls = do
+  tr <- treeViewGetSelectedPath tv
+  case tr of
+   [[x]] -> fmap Just $ listStoreGetValue ls x
+   _     -> return Nothing
+
