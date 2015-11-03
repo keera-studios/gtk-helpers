@@ -6,7 +6,7 @@ import Graphics.UI.Gtk.Layout.BackgroundContainer
 import Graphics.UI.Gtk.Board.BoardLink
 import GtkPegSolitaire
 
-main :: IO () 
+main :: IO ()
 main = do
   -- View
 
@@ -34,3 +34,23 @@ main = do
   -- Launch program with the main window
   widgetShowAll window
   mainGUI
+
+-- We do not need to give any feedback, so dragging is always allowed
+attemptDragStart :: Board Int Tile Peg -> (Int, Int) -> IO Bool
+attemptDragStart _ _ = return True
+
+-- We do not need to give any feedback, so dragging is always allowed
+attemptDragOver :: Board Int Tile Peg -> (Int, Int) -> (Int, Int) -> IO Bool
+attemptDragOver _ _ _ = return True
+
+attemptMove :: Board Int Tile Peg -> (Int, Int) -> (Int, Int) -> IO ()
+attemptMove board p1 p2 = do
+  pieceM     <- boardGetPiece p2 board           -- the piece on the position where the user dropped, if any
+  interPiece <- boardGetPiece intermediate board -- the piece between the one we are moving and the hole
+  when (correctDiff && isJust interPiece && isNothing pieceM) $ do
+    boardMovePiece p1 p2 board
+    boardRemovePiece intermediate board
+  where diffX = abs (fst p1 - fst p2)
+        diffY = abs (snd p1 - snd p2)
+        correctDiff  = (diffX == 0 && diffY == 2) || (diffX == 2 && diffY == 0)
+        intermediate = ((fst p1 + fst p2) `div` 2, (snd p1 + snd p2) `div` 2)
