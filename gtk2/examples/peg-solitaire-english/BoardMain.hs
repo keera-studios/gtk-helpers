@@ -6,9 +6,6 @@ import Data.Ix
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Board.TiledBoard
 
-data Player = Player
- deriving (Eq, Show)
-
 data Piece = Piece
  deriving (Eq, Show)
 
@@ -33,8 +30,8 @@ main = do
       inCorner x y = (x > 4 || x < 2) && (y < 2 || y > 4)
       pieces       = [(x,y) | (x,y,_) <- allTiles, (x /= 3 || y /= 3)]
       
-  board <- boardNew allTiles tileF playerF (32,32)
-  mapM_ (\x -> boardSetPiece x (Player,Piece) board) pieces
+  board <- boardNew allTiles tileF playerF
+  mapM_ (\x -> boardSetPiece x Piece board) pieces
   containerAdd window board
 
   -- Model
@@ -58,7 +55,7 @@ main = do
   widgetShowAll window
   mainGUI
 
-attemptMove :: Board Int Player tile Piece -> (Int, Int) -> (Int, Int) -> IO ()
+attemptMove :: Board Int tile Piece -> (Int, Int) -> (Int, Int) -> IO ()
 attemptMove board p1 p2 = do
   pieceM     <- boardGetPiece p2 board           -- the piece on the position where the user clicked, if any
   interPiece <- boardGetPiece intermediate board -- the piece between the one we are moving and the hole
