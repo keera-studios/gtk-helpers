@@ -1,14 +1,14 @@
 {-# Language MultiParamTypeClasses, FunctionalDependencies #-}
 
+import Control.Monad
 import Control.Monad.Trans (liftIO)
+import Data.Maybe
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Layout.BackgroundContainer
 import Graphics.UI.Gtk.Board.BoardLink
+import Graphics.UI.Gtk.Board.TiledBoard
 import GtkPegSolitaire
 import PegSolitaire
-import Graphics.UI.Gtk.Board.TiledBoard
-import Data.Maybe
-import Control.Monad
 
 main :: IO ()
 main = do
