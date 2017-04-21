@@ -20,6 +20,8 @@ _Installing the package gtk-helpers in that directory (cabal install finds the o
 
 In that case, you need to first execute `cabal install gtk -fhave-quartz-gtk` and then `cabal install`.
 
+If the problem isn't resolved even after executing `cabal install gtk -fhave-quartz-gtk` command, you may want to refer [this](http://stackoverflow.com/questions/43359289/architecture-x86-64-while-running-haskell-code-haskell-osx-iconv/43390487#43390487) for additional information.
+
 
 _For e.g., if you want to play lights-off game,_
 
