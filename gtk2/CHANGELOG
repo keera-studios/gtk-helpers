@@ -2,6 +2,7 @@
 
         * Adds project to Travis CI server.
         * Minor fixes to cabal file.
+        * Version bump (0.0.9.1).
 
 2017-04-13 Ivan Perez <ivan.perez@keera.co.uk>
 
