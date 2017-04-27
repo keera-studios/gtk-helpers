@@ -1,17 +1,17 @@
 Name:                gtk-helpers
 Version:             0.0.9
-Synopsis:            A collection of auxiliary operations and widgets related to Gtk
--- Description:         
+Synopsis:            A collection of auxiliary operations and widgets related to Gtk+
+Description:         A collection of auxiliary operations and widgets related to Gtk+.
 Homepage:            http://keera.es/blog/community
 License:             BSD3
 License-file:        LICENSE
 Author:              Ivan Perez
 Maintainer:          ivan.perez@keera.es
--- Copyright:           
+-- Copyright:
 Stability:           Experimental
 Category:            Graphics
 Build-type:          Simple
--- Extra-source-files:  
+Extra-source-files:  README
 Cabal-version:       >=1.6
 
 Library
@@ -20,10 +20,10 @@ Library
 
   hs-source-dirs:      src/
 
-  -- Build-tools:         
+  -- Build-tools:
   ghc-options: -Wall
 
-  -- Exposed-modules:     
+  -- Exposed-modules:
   exposed-modules: Data.Board.GameBoardIO
                  , Game.Board.BasicTurnGame
                  , Graphics.UI.Gtk.Board.TiledBoard
