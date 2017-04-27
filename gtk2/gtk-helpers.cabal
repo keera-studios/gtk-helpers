@@ -12,7 +12,7 @@ Stability:           Experimental
 Category:            Graphics
 Build-type:          Simple
 -- Extra-source-files:  
-Cabal-version:       >=1.2
+Cabal-version:       >=1.6
 
 Library
   Build-depends:       base >= 4 && < 5,
@@ -46,3 +46,7 @@ Library
                  , Graphics.UI.Gtk.Layout.EitherWidget
                  , Graphics.UI.Gtk.Layout.MaybeWidget
                  , System.Application
+
+Source-Repository head
+  Type:                 git
+  Location:             git@github.com:keera-studios/gtk-helpers.git
