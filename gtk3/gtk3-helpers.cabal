@@ -2,11 +2,11 @@ Name:                gtk3-helpers
 Version:             0.0.8
 Synopsis:            A collection of auxiliary operations and widgets related to Gtk
 -- Description:
-Homepage:            http://keera.es/blog/community
+Homepage:            http://keera.co.uk/blog/community
 License:             BSD3
 License-file:        LICENSE
 Author:              Ivan Perez
-Maintainer:          ivan.perez@keera.es
+Maintainer:          ivan.perez@keera.co.uk
 -- Copyright:
 Stability:           Experimental
 Category:            Graphics
