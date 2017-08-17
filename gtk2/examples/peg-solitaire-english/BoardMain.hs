@@ -1,17 +1,19 @@
-import Control.Monad
+{-# Language MultiParamTypeClasses, FunctionalDependencies #-}
+
 import Control.Monad.Trans (liftIO)
-import Data.Maybe
-import Data.IORef
-import Data.Ix
 import Graphics.UI.Gtk
+import Graphics.UI.Gtk.Layout.BackgroundContainer
+import Graphics.UI.Gtk.Board.BoardLink
+import Game.Board.BasicTurnGame
+import GtkPegSolitaire
+import PegSolitaire
 import Graphics.UI.Gtk.Board.TiledBoard
+import Data.Maybe
+import Control.Monad
+import System.IO
 
-data Piece = Piece
- deriving (Eq, Show)
 
-data Tile = Tile
-
-main :: IO () 
+main :: IO ()
 main = do
   -- View
 
@@ -20,33 +22,18 @@ main = do
 
   -- Create interface
   window  <- windowNew
-  tile    <- pixbufNewFromFile "player-piece-white.png"
-  player1 <- pixbufNewFromFile "player-piece-black.png"
+  -- vbox    <- vBoxNew False 2
+  bgBin   <- backgroundContainerNewWithPicture "Layout.jpg"
+  align   <- alignmentNew 0.5 0.5 0 0
 
-  let tileF   _ = tile
-      playerF _ = player1
+  game    <- gtkGame
+  board   <- attachGameRules game
 
-  let allTiles     = [(x,y,Tile) | x <- [0..6] :: [Int], y <- [0..6] :: [Int], not (inCorner x y)]
-      inCorner x y = (x > 4 || x < 2) && (y < 2 || y > 4)
-      pieces       = [(x,y) | (x,y,_) <- allTiles, (x /= 3 || y /= 3)]
-      
-  board <- boardNew allTiles tileF playerF
-  mapM_ (\x -> boardSetPiece x Piece board) pieces
-  containerAdd window board
+  containerAdd align board
+  containerAdd bgBin align
+  containerAdd window bgBin
 
-  -- Model
-  --
-  -- Apart from the board, our internal model, used to determine moves, legal
-  -- moves and the new board status
-  movingRef <- newIORef Nothing -- Are we moving a piece?
-
-  -- Controller
-  board `boardOnClick` \pos -> do
-    movingM <- readIORef movingRef -- the pos of the piece we are moving, if any
-    case movingM of
-      Just pos' -> do writeIORef movingRef Nothing
-                      attemptMove board pos' pos
-      Nothing   -> writeIORef movingRef . fmap (const pos) =<< boardGetPiece pos board
+  widgetSetSizeRequest window 960 720
 
   -- Close program if window is closed
   _ <- window `on` deleteEvent $ liftIO mainQuit >> return False
@@ -55,9 +42,17 @@ main = do
   widgetShowAll window
   mainGUI
 
-attemptMove :: Board Int tile Piece -> (Int, Int) -> (Int, Int) -> IO ()
+-- We do not need to give any feedback, so dragging is always allowed
+attemptDragStart :: Board Int Tile Peg -> (Int, Int) -> IO Bool
+attemptDragStart _ _ = return True
+
+-- We do not need to give any feedback, so dragging is always allowed
+attemptDragOver :: Board Int Tile Peg -> (Int, Int) -> (Int, Int) -> IO Bool
+attemptDragOver _ _ _ = return True
+
+attemptMove :: Board Int Tile Peg -> (Int, Int) -> (Int, Int) -> IO ()
 attemptMove board p1 p2 = do
-  pieceM     <- boardGetPiece p2 board           -- the piece on the position where the user clicked, if any
+  pieceM     <- boardGetPiece p2 board           -- the piece on the position where the user dropped, if any
   interPiece <- boardGetPiece intermediate board -- the piece between the one we are moving and the hole
   when (correctDiff && isJust interPiece && isNothing pieceM) $ do
     boardMovePiece p1 p2 board
@@ -66,3 +61,9 @@ attemptMove board p1 p2 = do
         diffY = abs (snd p1 - snd p2)
         correctDiff  = (diffX == 0 && diffY == 2) || (diffX == 2 && diffY == 0)
         intermediate = ((fst p1 + fst p2) `div` 2, (snd p1 + snd p2) `div` 2)
+
+
+
+
+
+
