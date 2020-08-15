@@ -1,18 +1,21 @@
+cabal-version:       >= 1.10
+build-type:          Simple
+
 name:                gtk-helpers
 version:             0.1.0
-synopsis:            A collection of auxiliary operations and widgets related to Gtk+
-description:         A collection of auxiliary operations and widgets related to Gtk+.
+author:              Ivan Perez
+maintainer:          ivan.perez@keera.co.uk
 homepage:            http://keera.co.uk/blog/community
 license:             BSD3
 license-file:        LICENSE
-author:              Ivan Perez
-maintainer:          ivan.perez@keera.co.uk
--- copyright:
-stability:           Experimental
+copyright:
+  (C) 2012-2013 Ivan Perez
+  (C) 2013-2020 Keera Studios Ltd
 category:            Graphics
-build-type:          Simple
+synopsis:            A collection of auxiliary operations and widgets related to Gtk+
+description:         A collection of auxiliary operations and widgets related to Gtk+.
+stability:           Experimental
 extra-source-files:  README
-cabal-version: >= 1.10
 
 library
   default-language: Haskell2010
