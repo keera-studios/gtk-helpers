@@ -33,10 +33,10 @@ flag test-doc-coverage
 library
 
   exposed-modules:
-                   Graphics.UI.Gtk.Extra.Builder
-                   Graphics.UI.Gtk.Extra.BuilderTH
-                   Graphics.UI.Gtk.Helpers.Combo
-                   System.Application
+    Graphics.UI.Gtk.Extra.Builder
+    Graphics.UI.Gtk.Extra.BuilderTH
+    Graphics.UI.Gtk.Helpers.Combo
+    System.Application
 
   build-depends:
       base >=4 && < 5
