@@ -13,7 +13,6 @@ category:            Graphics
 synopsis:            A collection of auxiliary operations and widgets related to Gtk
 description:         A collection of auxiliary operations and widgets related to Gtk+.
 stability:           Experimental
--- extra-source-files:
 
 -- You can disable the hlint test suite with -f-test-hlint
 flag test-hlint
@@ -27,32 +26,10 @@ flag test-doc-coverage
 
 library
 
-  -- exposed-modules:
-  -- other-modules:
-  -- build-tools:
-
   exposed-modules:
-                 -- Data.Board.GameBoardIO
-                 -- , Game.Board.BasicTurnGame
-                 -- , Graphics.UI.Gtk.Board.TiledBoard
-                 -- , Graphics.UI.Gtk.Board.BoardLink
-                 -- , Graphics.UI.Gtk.Entry.FormatEntry
-                 -- , Graphics.UI.Gtk.Entry.HighlightedEntry
                    Graphics.UI.Gtk.Extra.Builder
                  , Graphics.UI.Gtk.Extra.BuilderTH
                  , Graphics.UI.Gtk.Helpers.Combo
-                 -- , Graphics.UI.Gtk.Helpers.FileDialog
-                 -- , Graphics.UI.Gtk.Helpers.MenuItem
-                 -- , Graphics.UI.Gtk.Helpers.MessageDialog
-                 -- , Graphics.UI.Gtk.Helpers.ModelViewNotebookSync
-                 -- , Graphics.UI.Gtk.Helpers.ModelViewPath
-                 -- , Graphics.UI.Gtk.Helpers.Multiline.TextBuffer
-                 -- , Graphics.UI.Gtk.Helpers.Pixbuf
-                 -- , Graphics.UI.Gtk.Helpers.TreeView
-                 -- , Graphics.UI.Gtk.Layout.BackgroundContainer
-                 -- , Graphics.UI.Gtk.Layout.DummyBin
-                 -- , Graphics.UI.Gtk.Layout.EitherWidget
-                 -- , Graphics.UI.Gtk.Layout.MaybeWidget
                  , System.Application
 
   build-depends:
