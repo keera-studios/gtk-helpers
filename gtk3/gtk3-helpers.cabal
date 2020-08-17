@@ -74,6 +74,7 @@ library
   ghc-options:
     -Wall
 
+
 test-suite hlint
 
   type:
