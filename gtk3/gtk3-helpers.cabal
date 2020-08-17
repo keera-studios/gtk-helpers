@@ -8,7 +8,9 @@ maintainer:          ivan.perez@keera.co.uk
 homepage:            http://keera.co.uk/blog/community
 license:             BSD3
 license-file:        LICENSE
--- copyright:
+copyright:
+  (C) 2012-2013 Ivan Perez
+  (C) 2013-2020 Keera Studios Ltd
 category:            Graphics
 synopsis:            A collection of auxiliary operations and widgets related to Gtk
 description:         A collection of auxiliary operations and widgets related to Gtk+.
