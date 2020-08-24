@@ -59,12 +59,14 @@ library
     Graphics.UI.Gtk.Layout.DummyBin
     Graphics.UI.Gtk.Layout.EitherWidget
     Graphics.UI.Gtk.Layout.MaybeWidget
+    Graphics.UI.Gtk.StreamChart
     System.Application
 
   build-depends:
       base >= 4 && < 5
     , template-haskell
     , process
+    , cairo
     , gtk
     , gio
     , glib
