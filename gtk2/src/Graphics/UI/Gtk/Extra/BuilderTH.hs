@@ -57,8 +57,6 @@ gtkViewAccessor builderModule uiAccessor name kind = sequenceQ
                           )) []]
   ]
 
-  where castedAccess      = appE (varE (mkName "fromBuilder")) casting
-        casting           = varE (mkName ("castTo" ++ kind))
-        funcName          = mkName name
+  where funcName          = mkName name
         funcNameInBuilder = mkName $ builderModule ++ ('.' : name) 
         builderName       = mkName "b"
